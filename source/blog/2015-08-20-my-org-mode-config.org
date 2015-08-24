@@ -1,0 +1,19 @@
+#+TITLE: 神器orgmode的配置和使用
+#+DATE: 2015-08-20
+#+SETUPFILE: ~/Dev/octopress/source/setupfile.org
+#+JEKYLL_LAYOUT: post
+#+JEKYLL_CATEGORIES:
+#+JEKYLL_PUBLISHED: true
+
+这篇文章将我学习和使用orgmode的过程记录下来。orgmode是神器emacs中的神器，思想是通过简单的文本提供强大的管理功能。适合做知识管理，写博客，记录笔记和时间管理等。在众多笔记、协作类软件中，无出其右者。强烈推荐有基础的童鞋学习一下。说不定能给你带来惊喜。
+
+{{{more}}}
+
+* 软件环境
+
+
+* 配置UML绘图功能
+
+* 配置pdf导出功能
+
+* octopross写博客
