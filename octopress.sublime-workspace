@@ -145,10 +145,14 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/chenshen/Dev/octopress"
+		"/Users/chenshen/Dev/octopress",
+		"/Users/chenshen/Dev/octopress/source",
+		"/Users/chenshen/Dev/octopress/source/stylesheets"
 	],
 	"file_history":
 	[
+		"/Users/chenshen/Dev/octopress/source/stylesheets/screen.css",
+		"/Users/chenshen/Dev/octopress/.gitignore",
 		"/Users/chenshen/Dev/octopress/source/_includes/head.html",
 		"/Users/chenshen/Dev/octopress/public/index.html",
 		"/Users/chenshen/Dev/octopress/public/blog/categories/index.html",
@@ -172,7 +176,6 @@
 		"/Users/chenshen/Dev/octopress/source/_includes/post/sharing.html",
 		"/Users/chenshen/Dev/octopress/source/_includes/article.html",
 		"/Users/chenshen/Dev/octopress/source/_includes/custom/navigation.html",
-		"/Users/chenshen/Dev/octopress/source/stylesheets/screen.css",
 		"/Users/chenshen/Dev/octopress/source/_includes/navigation.html",
 		"/Users/chenshen/Dev/octopress/source/_includes/header.html",
 		"/Users/chenshen/Dev/octopress/source/_posts/2015-08-10-org-mode-export-pdf.markdown",
@@ -275,8 +278,7 @@
 		"/Users/chenshen/Src/UIKit/UIBarButtonItem.h",
 		"/Users/chenshen/Src/UIKit/NSStringDrawing.h",
 		"/Users/chenshen/Src/UIKit/NSTextStorage.h",
-		"/Users/chenshen/Desktop/debugNotes/ids.log",
-		"/Users/chenshen/Dev/juiphone/JUiPhone/todayCell.lua"
+		"/Users/chenshen/Desktop/debugNotes/ids.log"
 	],
 	"find":
 	{

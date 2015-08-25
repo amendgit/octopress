@@ -9,6 +9,7 @@
 本文记录了自己在Ubunutu环境下折腾octopress的过程.
 
 {{{more}}}
+
 * 我的环境
  | 项            | 版本        |
  |---------------+-------------|
@@ -42,7 +43,7 @@ Available versions:
 rbenv install 1.9.3-p0
 #+end_src
 
-rbenv的工作方式是，在$HOME/.rbenv/shims目录中，存放你选择的版本的ruby。因此，要把这个目录添加到系统PATH中去，在bashrc中修改:
+rbenv的工作方式是，在 =$HOME/.rbenv/shims= 目录中，存放你选择的版本的ruby。因此，要把这个目录添加到系统PATH中去，在bashrc中修改:
 #+begin_src sh
 export PATH=$HOME/.rbenv/shims:$PATH
 #+end_src
@@ -53,7 +54,7 @@ rbenv local 1.9.3-p0
 rbenv rehash
 #+end_src
 
-运行source ~/.bashrc使改动立即生效。
+运行 =source ~/.bashrc= 使改动立即生效。
 
 下载octopress源码，我是在~/Dev下放置我的代码的。
 #+begin_src sh
@@ -68,9 +69,9 @@ rbenv rehash
 bundle install
 #+end_src
 
-在github上创建一个repo，名字须要叫做 username.github.io,其中username就是你的用户名。比如我的用户名是sj20082663, 那repo就是sj20082663.github.io。
+在github上创建一个repo，名字须要叫做  =username.github.io= ,其中username就是你的用户名。比如我的用户名是sj20082663, 那repo就是sj20082663.github.io。
 
-使用rake setup_github_pages连接octopress和github就可以了。
+使用 =rake setup_github_pages= 连接octopress和github就可以了。
 
 * 使用
 到这一步安装其实就已经完成了，基本用法这里不详细的说，只是简单的介绍下：
@@ -80,8 +81,8 @@ bundle install
 - rake deploy，部署到github上，部署过程中有任何问题，github会把log发送到你的邮箱的。
 
 * 相关问题
-** Mac下如何安装
+** Q1 Mac下如何安装
 Mac下唯一的区别是在rbenv安装ruby的时候有问题，1.9.3须要使用gcc编译，但是mac默认已经不附带gcc了。我在我的Mac上安装的是2.2.0版本，也是一样可以工作的。
 
-** bundle install总是失败怎么办
+** Q2 bundle install总是失败怎么办
 bundle install这一步是从服务器上下载ruby的第三方包并安装到当前活动的ruby环境中去。由于这些技术性的网站被屏蔽了，因此，没有办法直接下载。如果想要下载，得要自带梯子。
