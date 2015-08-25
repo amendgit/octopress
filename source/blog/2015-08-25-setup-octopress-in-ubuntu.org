@@ -85,4 +85,11 @@ bundle install
 Mac下唯一的区别是在rbenv安装ruby的时候有问题，1.9.3须要使用gcc编译，但是mac默认已经不附带gcc了。我在我的Mac上安装的是2.2.0版本，也是一样可以工作的。
 
 ** Q2 bundle install总是失败怎么办
-bundle install这一步是从服务器上下载ruby的第三方包并安装到当前活动的ruby环境中去。由于这些技术性的网站被屏蔽了，因此，没有办法直接下载。如果想要下载，得要自带梯子。
+bundle install这一步是从服务器上下载ruby的第三方包并安装到当前活动的ruby环境中去。由于这些技术性的网站被屏蔽了，因此，没有办法直接下载。可以使用taobao的RubyGems镜像，[[http://ruby.taobao.org/][淘宝RubyGems镜像]], 执行过程如下：
+#+begin_src sh
+gem sources --remove https://rubygems.org/
+gem sources -a https://ruby.taobao.org/
+gem sources -l
+    *** CURRENT SOURCES ***
+    https://ruby.taobao.org
+#+end_src
