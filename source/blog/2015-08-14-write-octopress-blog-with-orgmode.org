@@ -1,6 +1,6 @@
 #+TITLE: 用orgmode和octopress在github上写博客
 #+DATE: 2015-08-14
-#+SETUPFILE: ~/Dev/octopress/source/setupfile.org
+#+SETUPFILE: ~/Dev/octopress/setupfile.org
 #+JEKYLL_LAYOUT: post
 #+JEKYLL_CATEGORIES:
 #+JEKYLL_PUBLISHED: true

@@ -1,6 +1,6 @@
 #+TITLE: 神器orgmode的配置和使用
 #+DATE: 2015-08-20
-#+SETUPFILE: ~/Dev/octopress/source/setupfile.org
+#+SETUPFILE: ~/Dev/octopress/setupfile.org
 #+JEKYLL_LAYOUT: post
 #+JEKYLL_CATEGORIES:
 #+JEKYLL_PUBLISHED: true
