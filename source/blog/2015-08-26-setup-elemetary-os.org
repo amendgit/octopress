@@ -91,8 +91,21 @@ sudo apt-get install atom
 去官方网站 [[http://www.sublimetext.com/3][下载Sublim]]e 的deb安装包，右键用debi打开。点击 Install Package就可以了。
 
 * 安装StartUML
+StartUML是原作者近期开发的新的UML画图软件，保留了之前的强大功能的基础上，增加了更多功能和支持了多个操作系统。
+
+
+
 * 安装SmartGit
+SmartGit是一个跨linux、win、mac三个平台的git版本控制软件。用习惯了的话，非常好用。可以免费用于非商业用途。
+
+安装通过去官网下载deb安装包，然后使用debi安装即可。官网的下载可能会比较慢，需要耐心等待或者Lantern一下。
+
+参考：
+- 官方网站：http://www.syntevo.com/smartgit/download
+
 * 安装Elementary Tweaks
+Elementary Tweaks是eOS上一个增强配置的工具。可以个性化的定制自己的eOS，包括修改UI和窗口按钮布局，修改主题，修改icon，修改文件管理器的单双击等。
+
 Freya安装Elementary Tweaks可以通过PPA安装：
 #+begin_src sh
 sudo apt-add-repository ppa:numix/ppa
@@ -101,6 +114,7 @@ sudo apt-get install numix-icon-theme-circle
 #+end_src
 
 参考：
+- [[http://itsfoss.com/install-elementary-tweaks-in-elementary-os-freya-luna/][How To Install Elementary Tweaks In Elementary OS Freya & Luna]]
 - [[http://itsfoss.com/install-themes-icons-elementary-os-freya/][Install themes and icons in Elementary OS Freya]]
 
 * 安装搜狗输入法
