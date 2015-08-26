@@ -8,3 +8,4 @@
 #+MACRO: github [[https://github.com/sj20082663][辰申的github]]
 #+MACRO: gist @@html:{% gist $1 $2 %}@@
 #+PROPERTY: cache yes
+#+startup: indent
