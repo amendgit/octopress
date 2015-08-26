@@ -8,6 +8,24 @@
 
 {{{more}}}
 
+* 选择阿里云的源
+按住Alt+F2，搜Software & Updates，选择软件源到阿里云的源，速度会快上很多。然后，就是标准的 =sudo apt-get update= 和 =sudo apt-get upgrade= 了。
+
+* 安装受版权限制的软件
+有很多包由于版权的限制，不能集成在系统里发行。包括一些第三方的解码器，微软的TrueType字体，java等。这些包是放在源里可以安装的，在Software & Updates里可以看到有一项源叫做 Software restricted by copyright or legal issues。这些包可以通过下面这个命令安装。
+#+begin_src sh
+sudo apt-get install gnome-system-monitor
+#+end_src
+
+* 安装系统监控器
+系统监控器是gnome套件中的一个好用的系统资源使用情况查看器。推荐使用。
+#+begin_src sh
+sudo apt-get install gnome-system-monitor
+#+end_src
+
+参考
+- [[http://www.webupd8.org/2012/03/official-gnome-shell-extensions-weather.html][offical gnome shell extensions]]
+
 * 用户脚本目录.usrbin
 在 =~/= 目录下面，创建一个.usrbin文件夹，并且在 ~/.profile 里把它放置到PATH的最前面。
 #+begin_src sh
@@ -93,8 +111,6 @@ sudo apt-get install atom
 * 安装StartUML
 StartUML是原作者近期开发的新的UML画图软件，保留了之前的强大功能的基础上，增加了更多功能和支持了多个操作系统。
 
-
-
 * 安装SmartGit
 SmartGit是一个跨linux、win、mac三个平台的git版本控制软件。用习惯了的话，非常好用。可以免费用于非商业用途。
 
@@ -117,6 +133,17 @@ sudo apt-get install numix-icon-theme-circle
 - [[http://itsfoss.com/install-elementary-tweaks-in-elementary-os-freya-luna/][How To Install Elementary Tweaks In Elementary OS Freya & Luna]]
 - [[http://itsfoss.com/install-themes-icons-elementary-os-freya/][Install themes and icons in Elementary OS Freya]]
 
+* 安装oracle-jdk
+* 安装intellj idea
+* 安装pycharm
+* 安装chrome
+* 安装chrome的flash plugin
+在Software Updates选择Canonical Parter的源。 =sudo apt-get update= 更新源头，然后 =sudo apt-get install adobe-flashplugin=
+
+参考
+- [[https://wiki.ubuntu.com/Chromium/Getting-Flash][Getting-Flash]]
+
+* 安装Lantern
 * 安装搜狗输入法
 * Atom支持中文显示
 在设置（packages->Setting View->Open 或者 Ctrl+,）的font-family里填下面的字体，注意要加最后的分号。下面的字体是系统自带的，可以改成你喜好的字体，我用的是从拷贝过来的Consolas和Yahei字体 =Droid Sans Mono, Droid Sans Fallback;= , 网上还有一些免费的中文字体，大家可以选用。

@@ -16,13 +16,12 @@
  | Elementary OS | 0.3 (Freya) |
  | Octopress     | 3.0         |
 
-
 * 安装过程
 安装rbenv和ruby-build
 
 #+begin_src sh
 sudo apt-get install rbenv
-sudo apt-get install ruby-build
+git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
 #+end_src
 
 输入ruby install -l命令,查看可用的安装ruby版本
