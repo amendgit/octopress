@@ -37,6 +37,11 @@ Available versions:
   ...
 #+end_src
 
+安装编译依赖
+#+begin_src sh
+apt-get install autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm3 libgdbm-dev
+#+end_src
+
 选择合适的版本安装，我安装的是最新版的1.9.3-p0
 #+begin_src sh
 rbenv install 1.9.3-p0
