@@ -1,20 +1,29 @@
-#+TITLE: setup-elemetary-os
+#+TITLE: 安装ElementaryOS Freya后的配置
 #+DATE: 2015-08-26
 #+SETUPFILE: ~/Dev/octopress/setupfile.org
 #+JEKYLL_LAYOUT: post
 #+JEKYLL_CATEGORIES:
 #+JEKYLL_PUBLISHED: true
+#+options: num:1
+
 本文记录了配置我的ElementaryOS的过程。
 
 {{{more}}}
 
+#+TOC: headlines 1
+
 * 选择阿里云的源
-按住Alt+F2，搜Software & Updates，选择软件源到阿里云的源，速度会快上很多。然后，就是标准的 =sudo apt-get update= 和 =sudo apt-get upgrade= 了。
+按住Alt+F2，搜Software & Updates，选择软件源到阿里云的源，速度会快上很多。接着就是标准的 =sudo apt-get update= 和 =sudo apt-get upgrade= 了。
+
+或者下载Lantern代理，在命令行设置http代理，也能无障碍的update & upgrade
+#+begin_src sh
+export http_proxy=http://127.0.0.1:8787
+#+end_src
 
 * 安装受版权限制的软件
-有很多包由于版权的限制，不能集成在系统里发行。包括一些第三方的解码器，微软的TrueType字体，java等。这些包是放在源里可以安装的，在Software & Updates里可以看到有一项源叫做 Software restricted by copyright or legal issues。这些包可以通过下面这个命令安装。
+有很多包由于版权的限制，不能集成在系统里发行。包括一些第三方的解码器，微软的TrueType字体，java等。这些包是放在源里可以安装的，在Software & Updates里可以看到有一项源叫做 =Software restricted by copyright or legal issues= 。这些包可以通过下面这个命令安装。
 #+begin_src sh
-sudo apt-get install gnome-system-monitor
+sudo apt-get install ubuntu-restricted-extras
 #+end_src
 
 * 安装系统监控器
@@ -87,16 +96,16 @@ checkinstall
 
 其中，--prefix参数是指定emacs安装的目录。我习惯安装在usr目录，而不是默认的/usr/local目录。checkinstall命令是将编译好的emacs打包成deb包，然后用户再用gdebi安装，这样的好处是，可以方便的用apt-get去卸载。如果直接make install的话，还需要保留源码才能再需要卸载的时候卸载掉。
 
-我的电脑室x86的，我已经打包好了一个x86版本的deb包，可以去百度云盘上下载。
+我的机器是x86的，我已经打包好了一个x86版本的deb包，可以去百度云盘上下载安装。
 
 参考:
 - [[http://ubuntuhandbook.org/index.php/2014/10/emacs-24-4-released-install-in-ubuntu-14-04/][Emacs 24.4 Released, How to Install it in Ubuntu 14.04]]
 - [[http://www.ibm.com/developerworks/cn/linux/l-cn-checkinstall/index.html][Linux 的源码安装工具 CheckInstall]]
 
 * 安装Atom
-Atom没有提供x86版本的deb包，但是确实是支持x86的。64位版本的，在Atom的官网就能下载了。32位的电脑需要用PPA下载安装。
+Atom没有提供x86版本的deb包，但是确实是支持x86的。64位版本的deb包在Atom的官网就可以下载。32位的机器可以用PPA下载安装。
 
-32位和64位的机器都可以使用PPA安装：
+32位和64位的机器都可以使用PPA安装，命令如下：
 #+begin_src sh
 sudo add-apt-repository ppa:webupd8team/atom
 sudo apt-get update
@@ -105,11 +114,15 @@ sudo apt-get install atom
 
 64位的电脑可以去官方网站上下载安装包： https://atom.io/ ，然后，直接用debi打开就可以安装了。
 
-* 安装Sublime
-去官方网站 [[http://www.sublimetext.com/3][下载Sublim]]e 的deb安装包，右键用debi打开。点击 Install Package就可以了。
+* 安装Sublime Text 3
+去官方网站 [[http://www.sublimetext.com/3][下载Sublime]] 的deb安装包，右键用gdebi打开。点击 Install Package就可以了。
+
+在ElementaryOS Freya上，安装的Sublime Text 3是没办法输入中文的。想要支持中文还需要配置一下，后面有说明如何配置的。
 
 * 安装StartUML
-StartUML是原作者近期开发的新的UML画图软件，保留了之前的强大功能的基础上，增加了更多功能和支持了多个操作系统。
+StartUML是原作者近期开发的新的UML画图软件，保留了之前的强大功能的基础上，增加了更多功能和支持了多个操作系统。虽然是收费的软件，但是无限期试用的。只不过会隔一段时间弹出来一个提示框让你购买而已。个人觉得作者还是挺厚道的，这里就不连接到下载页面了，大家去官网找下载入口吧。
+
+- 官方网址：http://staruml.io/
 
 * 安装SmartGit
 SmartGit是一个跨linux、win、mac三个平台的git版本控制软件。用习惯了的话，非常好用。可以免费用于非商业用途。
@@ -134,9 +147,27 @@ sudo apt-get install numix-icon-theme-circle
 - [[http://itsfoss.com/install-themes-icons-elementary-os-freya/][Install themes and icons in Elementary OS Freya]]
 
 * 安装oracle-jdk
-* 安装intellj idea
-* 安装pycharm
-* 安装chrome
+自带的源里带的是open-jdk。如果想安装oracle就得用ppa源安装，这是最简单的方法了。
+#+begin_src sh
+sudo apt-add-repository ppa:webupd8team/java
+sudo apt-get update
+sudo apt-get install oracle-java8-installer
+#+end_src
+
+* 安装IntelliJ-IDEA
+去官网下载tar.sz包，选择社区版。社区版本可以免费用于非商业用途，作为个人试用基本够了。如果是公司试用的话，公司会去购买的。
+
+解压后放在合适的位置，比如/usr/share里，然后进入ideaC/bin目录，运行idea.sh。运行后，可以在Tools里找到Create Desktop Shortcut就能在菜单里找到了。
+
+同样，也可以安装Pycharm。下载过程中会有网速限制，建议直接Lantern一下。
+
+- 官网下载页面：https://www.jetbrains.com/idea/download/
+
+* 安装Google Chrome
+可以去官网下载deb包安装 https://www.google.com/intl/en-US/chrome/browser/ 下载后用gdebi安装即可。
+
+注意，chromium可以直接在软件中心安装，但是chromium和google chrome是有区别的，从用户角度则是图标不一样。安装chromium可以直接命令行安装。
+
 * 安装chrome的flash plugin
 在Software Updates选择Canonical Parter的源。 =sudo apt-get update= 更新源头，然后 =sudo apt-get install adobe-flashplugin=
 
@@ -144,7 +175,20 @@ sudo apt-get install numix-icon-theme-circle
 - [[https://wiki.ubuntu.com/Chromium/Getting-Flash][Getting-Flash]]
 
 * 安装Lantern
+Lantern是一个p2p网络代理软件，主旨是所有人都可以自由的访问互联网，她的前提是基于大部分被禁止访问的网址并不是因为他们的内容非法，比如技术类的网站。
+
+去这里下载你的系统对应的版本，然后安装就可以了。Ubuntu下用gdebi安装，就能使用了。
+https://github.com/getlantern/lantern/releases/tag/latest
+
+在命令行下面指定apt-get使用代理，还要执行一个命令。 =export http_proxy=http:127.0.0.1:8787=
+
+我上外网主要是看一些技术的文章和下载一些技术软件，所以基本满足需求了。至于政治那么高端的东西，我个人觉得我的智商还判断不了外网那些新闻短片的真假性，所以从来不看。
+
 * 安装搜狗输入法
+先要删除系统自带的ibus输入法 =sudo apt-get remove ibus= 下载官网的输入法安装包，用debi打开安装就可以了。我是重启后才能正常使用，不知道是不是都需要这样。
+
+- [[http://pinyin.sogou.com/linux/?r=pinyin][搜狗输入法 for linux]]
+
 * Atom支持中文显示
 在设置（packages->Setting View->Open 或者 Ctrl+,）的font-family里填下面的字体，注意要加最后的分号。下面的字体是系统自带的，可以改成你喜好的字体，我用的是从拷贝过来的Consolas和Yahei字体 =Droid Sans Mono, Droid Sans Fallback;= , 网上还有一些免费的中文字体，大家可以选用。
 
