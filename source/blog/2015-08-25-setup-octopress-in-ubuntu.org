@@ -24,6 +24,8 @@ sudo apt-get install rbenv
 git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
 #+end_src
 
+http://qiita.com/ringo/items/4351c6aee70ed6f346c8
+
 输入ruby install -l命令,查看可用的安装ruby版本
 #+begin_src sh
 usage: rbenv install VERSION
@@ -97,3 +99,13 @@ gem sources -l
     *** CURRENT SOURCES ***
     https://ruby.taobao.org
 #+end_src
+** Q3 rake preview时运行提示： Could not find a JavaScript runtime.
+这是由于没有安装js的运行时，建议安装nodejs =sudo apt-get install nodejs=
+
+** Q4 编译最新的ruby 2.2.2时，提示编译有错误
+ruby 2.2.2的一些依赖没有安装导致的，需要先安装相关依赖
+#+begin_src sh
+sudo apt-get install -y autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm3 libgdbm-dev
+#+end_src
+
+参考：http://qiita.com/ringo/items/4351c6aee70ed6f346c8
