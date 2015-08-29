@@ -12,6 +12,8 @@
 
 #+TOC: headlines 1
 
+* eOS截图
+file:../images/elementaryos.jpg
 * 选择阿里云的源
 按住Alt+F2，搜Software & Updates，选择软件源到阿里云的源，速度会快上很多。接着就是标准的 =sudo apt-get update= 和 =sudo apt-get upgrade= 了。
 
@@ -71,7 +73,7 @@ GTK_IM_MODULE="xim" exec /usr/bin/scratch-text-editor "$@"
 参考：
 - [[http://os.51cto.com/art/201311/416060.htm][Ubuntu每日小技巧——怎样修改你的计算机名字]]
 
-* 安装debi工具
+* 安装gdebi工具
 debi是一个包安装工具，图形化的界面，所以使用很方便，强烈建议安装。
 #+begin_src sh
 sudo apt-get install debi
@@ -119,8 +121,10 @@ sudo apt-get install atom
 
 在ElementaryOS Freya上，安装的Sublime Text 3是没办法输入中文的。想要支持中文还需要配置一下，后面有说明如何配置的。
 
-* 安装StartUML
+* 安装StarUML
 StartUML是原作者近期开发的新的UML画图软件，保留了之前的强大功能的基础上，增加了更多功能和支持了多个操作系统。虽然是收费的软件，但是无限期试用的。只不过会隔一段时间弹出来一个提示框让你购买而已。个人觉得作者还是挺厚道的，这里就不连接到下载页面了，大家去官网找下载入口吧。
+
+file:http://staruml.io/image/screenshot.png
 
 - 官方网址：http://staruml.io/
 
@@ -166,13 +170,7 @@ sudo apt-get install oracle-java8-installer
 * 安装Google Chrome
 可以去官网下载deb包安装 https://www.google.com/intl/en-US/chrome/browser/ 下载后用gdebi安装即可。
 
-注意，chromium可以直接在软件中心安装，但是chromium和google chrome是有区别的，从用户角度则是图标不一样。安装chromium可以直接命令行安装。
-
-* 安装chrome的flash plugin
-在Software Updates选择Canonical Parter的源。 =sudo apt-get update= 更新源头，然后 =sudo apt-get install adobe-flashplugin=
-
-参考
-- [[https://wiki.ubuntu.com/Chromium/Getting-Flash][Getting-Flash]]
+注意，chromium可以直接在软件中心安装，但是chromium和google chrome是有区别的，从用户角度则是图标不一样，不需要安装falsh插件等等。安装chromium可以直接命令行安装。
 
 * 安装Lantern
 Lantern是一个p2p网络代理软件，主旨是所有人都可以自由的访问互联网，她的前提是基于大部分被禁止访问的网址并不是因为他们的内容非法，比如技术类的网站。
@@ -226,9 +224,34 @@ gcc -shared -o libsubl-im.so subl_im.c `pkg-config --libs --cflags gtk+-2.0` -fP
 #+end_src
 
 创建subl文件， =text ~/.usrbin/subl=
-#+begin_src sh
-#!/bin/bash
-LD_PRELOAD=$HOME/.usrbin/libsubl-im.so exec /usr/bin/subl "$@"
+#+begin_src python
+#!/usr/bin/env python
+
+import sys
+import os
+import subprocess
+
+def run():
+    exe = "/opt/sublime_text/sublime_text"
+    cwd = os.getcwd()
+    cmd = [exe]
+
+    if len(sys.argv) >= 2:
+        path = sys.argv[1]
+
+        if path.startswith("file"):
+            path = path[5:]
+
+        if not os.path.isabs(path):
+            path = os.path.join(os.getcwd(), path)
+
+        cmd = [exe, path]
+
+    env = dict(os.environ)
+    env['LD_PRELOAD'] = os.path.expanduser('~/.usrbin/libsubl-im.so')
+    subprocess.Popen(cmd, env=env)
+
+run()
 #+end_src
 
 修改文件使其可以执行 =sudo chmod +x sublime_text=
@@ -239,18 +262,69 @@ LD_PRELOAD=$HOME/.usrbin/libsubl-im.so exec /usr/bin/subl "$@"
 
 * Scratch支持中文输入
 在.usrbin目录下创建scratch-text-editor
-#+begin_src sh
-#!/bin/bash
-GTK_IM_MODULE="xim" exec /usr/bin/scratch-text-editor "$@"
+#+begin_src python
+#!/usr/bin/env python
+
+import sys
+import os
+import subprocess
+
+def run():
+    exe = "/usr/bin/scratch-text-editor"
+    cwd = os.getcwd()
+    cmd = [exe]
+
+    if len(sys.argv) >= 2:
+        path = sys.argv[1]
+
+        if path.startswith("file"):
+            path = path[5:]
+
+        if not os.path.isabs(path):
+            path = os.path.join(os.getcwd(), path)
+
+        cmd = [exe, path]
+
+    env = dict(os.environ)
+    env['GTK_IM_MODULE'] = "xim"
+    subprocess.Popen(cmd, env=env)
+
+run()
 #+end_src
 
 然后再chmod一下，添加可执行权限 =chmod +x scratch-text-editor=
 
 * Emacs中文输入和闪退问题
 在usrbin目录下创emacs文件 内容改为
-#+begin_src sh
-#!/bin/bash
-XLIB_SKIP_ARGB_VISUALS=1 LC_CTYPE=zh_CN.UTF-8 exec /usr/bin/emacs
+#+begin_src python
+#!/usr/bin/env python
+
+import sys
+import os
+import subprocess
+
+def run():
+    exe = "/usr/bin/emacs"
+    cwd = os.getcwd()
+    cmd = [exe]
+
+    if len(sys.argv) >= 2:
+        path = sys.argv[1]
+
+        if path.startswith("file"):
+            path = path[5:]
+
+        if not os.path.isabs(path):
+            path = os.path.join(os.getcwd(), path)
+
+        cmd = [exe, path]
+
+    env = dict(os.environ)
+    env['XLIB_SKIP_ARGB_VISUALS'] = '1'
+    env['LC_CTYPE'] = 'zh_CN.UTF-8'
+    subprocess.Popen(cmd, env=env)
+
+run()
 #+end_src
 
 用Launcher Manager修改emacs的Exec为emacs %F。如果在Launchaer Manager找不到emacs的图标，就去/usr/share/applications下找emacs24.desktop这个文件，直接sudo修改这个文件的Exec那一行，Exec=emacs %F。
