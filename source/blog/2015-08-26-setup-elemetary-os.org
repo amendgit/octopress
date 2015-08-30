@@ -6,7 +6,7 @@
 #+JEKYLL_PUBLISHED: true
 #+options: num:1
 
-本文记录了配置我的ElementaryOS的过程。
+Elementary据说是颜值最高的Linux发行版。刚好屋子里有一个笔记本暂时闲置在那里。于是就拿来折腾安装了ElementaryOS Freya。配置使用了之后，发现还挺不错的。不过针对果然的使用习惯还是有很多地方需要配置的。本文记录了我的ElementaryOS过程。
 
 {{{more}}}
 
@@ -141,9 +141,9 @@ Elementary Tweaks是eOS上一个增强配置的工具。可以个性化的定制
 
 Freya安装Elementary Tweaks可以通过PPA安装：
 #+begin_src sh
-sudo apt-add-repository ppa:numix/ppa
+sudo add-apt-repository ppa:mpstark/elementary-tweaks-daily
 sudo apt-get update
-sudo apt-get install numix-icon-theme-circle
+sudo apt-get install elementary-tweaks
 #+end_src
 
 参考：
@@ -171,6 +171,11 @@ sudo apt-get install oracle-java8-installer
 可以去官网下载deb包安装 https://www.google.com/intl/en-US/chrome/browser/ 下载后用gdebi安装即可。
 
 注意，chromium可以直接在软件中心安装，但是chromium和google chrome是有区别的，从用户角度则是图标不一样，不需要安装falsh插件等等。安装chromium可以直接命令行安装。
+
+*启动时出现两个chrome图标问题* : 在/usr/share/applications/google-stable.desktop中添加一项 =StartupWMClass=Google-chrome-stable= 之后，再启动chrome浏览器Dock栏就不会出现连个chrome图标了。
+
+参考：
+- http://itsfoss.com/rid-google-chrome-icons-dock-elementary-os-freya/
 
 * 安装Lantern
 Lantern是一个p2p网络代理软件，主旨是所有人都可以自由的访问互联网，她的前提是基于大部分被禁止访问的网址并不是因为他们的内容非法，比如技术类的网站。
