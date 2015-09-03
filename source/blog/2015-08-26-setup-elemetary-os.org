@@ -4,7 +4,8 @@
 #+JEKYLL_LAYOUT: post
 #+JEKYLL_CATEGORIES:
 #+JEKYLL_PUBLISHED: true
-#+options: num:1
+#+options: num:nil
+#+html_head: <link rel="stylesheet" href="../stylesheets/Github2.css"/>
 
 Elementary据说是颜值最高的Linux发行版。刚好屋子里有一个笔记本暂时闲置在那里。于是就拿来折腾安装了ElementaryOS Freya。配置使用了之后，发现还挺不错的。不过针对果然的使用习惯还是有很多地方需要配置的。本文记录了我的ElementaryOS过程。
 
