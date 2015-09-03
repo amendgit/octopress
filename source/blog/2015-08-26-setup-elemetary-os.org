@@ -192,6 +192,11 @@ https://github.com/getlantern/lantern/releases/tag/latest
 
 - [[http://pinyin.sogou.com/linux/?r=pinyin][搜狗输入法 for linux]]
 
+* 其他软件
+我还安装了其他各种小工具，安装过程比较简单，直接集中列举在这了
+- Y PPA Manager: 一个ppa源管理的小工具，推荐使用。
+- font-manager 字体管理工具，自带的gnome-font-viewer总是让系统死机，就给删了，换了这个。还有个gnome-specimen的字体工具也可以。我是两个都装了。
+- synaptic package manager: 新立得包管理工具，比ubuntu自带的那个非常卡的软件中心好用。
 * Atom支持中文显示
 在设置（packages->Setting View->Open 或者 Ctrl+,）的font-family里填下面的字体，注意要加最后的分号。下面的字体是系统自带的，可以改成你喜好的字体，我用的是从拷贝过来的Consolas和Yahei字体 =Droid Sans Mono, Droid Sans Fallback;= , 网上还有一些免费的中文字体，大家可以选用。
 
