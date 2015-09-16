@@ -44,19 +44,19 @@ Available versions:
 apt-get install autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm3 libgdbm-dev
 #+end_src
 
-选择合适的版本安装，我安装的是最新版的1.9.3-p0
+选择合适的版本安装，我安装的是最新版的2.2.2
 #+begin_src sh
-rbenv install 1.9.3-p0
+rbenv install 2.2.2
 #+end_src
 
-rbenv的工作方式是，在 =$HOME/.rbenv/shims= 目录中，存放你选择的版本的ruby。因此，要把这个目录添加到系统PATH中去，在bashrc中修改:
+rbenv的工作方式是，在$HOME/.rbenv/shims目录中，存放你选择的版本的ruby。因此，要把这个目录添加到系统PATH中去，在bashrc中修改:
 #+begin_src sh
 export PATH=$HOME/.rbenv/shims:$PATH
 #+end_src
 
-运行rbenv切换到我们安装的1.9.3的环境中去
+运行rbenv切换到我们安装的2.2.2的环境中去
 #+begin_src sh
-rbenv local 1.9.3-p0
+rbenv global 2.2.2
 rbenv rehash
 #+end_src
 
@@ -93,12 +93,14 @@ Mac下唯一的区别是在rbenv安装ruby的时候有问题，1.9.3须要使用
 ** Q2 bundle install总是失败怎么办
 bundle install这一步是从服务器上下载ruby的第三方包并安装到当前活动的ruby环境中去。由于这些技术性的网站被屏蔽了，因此，没有办法直接下载。可以使用taobao的RubyGems镜像，[[http://ruby.taobao.org/][淘宝RubyGems镜像]], 执行过程如下：
 #+begin_src sh
-gem sources --remove https://rubygems.org/
+gem sources --remove http://rubygems.org/
 gem sources -a https://ruby.taobao.org/
 gem sources -l
     *** CURRENT SOURCES ***
     https://ruby.taobao.org
 #+end_src
+
+同时修改Gemfile，source "https://ruby.taobao.org"
 ** Q3 rake preview时运行提示： Could not find a JavaScript runtime.
 这是由于没有安装js的运行时，建议安装nodejs =sudo apt-get install nodejs=
 

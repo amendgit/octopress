@@ -5,23 +5,62 @@
 #+JEKYLL_CATEGORIES:
 #+JEKYLL_PUBLISHED: true
 #+options: num:nil
-#+html_head: <link rel="stylesheet" href="../stylesheets/Github2.css"/>
 
-Elementary据说是颜值最高的Linux发行版。刚好屋子里有一个笔记本暂时闲置在那里。于是就拿来折腾安装了ElementaryOS Freya。配置使用了之后，发现还挺不错的。不过针对果然的使用习惯还是有很多地方需要配置的。本文记录了我的ElementaryOS过程。
+Elementary据说是颜值最高的Linux发行版。刚好屋子里有一个笔记本暂时闲置在那里。于是就拿来折腾安装了ElementaryOSFreya。配置使用了之后，发现还挺不错的。不过针对果然的使用习惯还是有很多地方需要配置的。本文记录了我的ElementaryOS过程。
 
 {{{more}}}
 
 #+TOC: headlines 1
 
-* eOS截图
+* 先上的效果图
 file:../images/elementaryos.jpg
-* 选择阿里云的源
-按住Alt+F2，搜Software & Updates，选择软件源到阿里云的源，速度会快上很多。接着就是标准的 =sudo apt-get update= 和 =sudo apt-get upgrade= 了。
 
-或者下载Lantern代理，在命令行设置http代理，也能无障碍的update & upgrade
+* 更换软件源
+按住Alt+F2，搜Software & Updates，选择软件源到阿里云的源，速度会快上很
+多。接着就是标准的 =sudo apt-get update= 和 =sudo apt-get upgrade= 了。
+
+* 包管理工具
+安装包管理的工具，可以更方便的安装和管理软件。
+
+gdebi: 一个图形化包安装管理工具，=sudo apt-get gdebi=
+
+synaptic: 新立德，=sudo apt-get install synaptic=
+
+Y ppa manager: ppa源管理工具
 #+begin_src sh
-export http_proxy=http://127.0.0.1:8787
+sudo add-apt-repository ppa:webupd8team/y-ppa-manager
+sudo apt-get update
+sudo apt-get install y-ppa-manager
 #+end_src
+
+* 搜狗输入法
+先要删除系统自带的ibus输入法 =sudo apt-get remove ibus= 。
+
+用ppa管理工具添加源：ppa:fcitx-team/nightly
+
+安装下面的这些包
+#+begin_src sh
+fcitx fcitx-config-gtk fcitx-sunpinyin fcitx-googlepinyin fcitx-module-cloudpinyin fcitx-table-all
+#+end_src
+
+下载官网的搜狗输入法安装包，用gdebi打开安装。
+
+如果遇到下面这个错误
+#+begin_src sh
+/var/lib/dpkg/info/sogoupinyin.postinst: 7: local: OS": bad variable name
+#+end_src
+用 =sudo scratch-text-editor /etc/os-release= 打开文件，替换ID选项
+的 =elementary OS= 修改成elementaryOS。再继续安装，等安装完成后再修改回来。
+
+注销，重新登陆，就可以正常使用了。
+
+*其他*
+可以再应用程序里搜索 =facitx configuration= 打开输入法设置。
+
+添加和删除已经安装的输入法到活动状态。记住要取消勾选 =Only show current language=
+
+*参考*
+- [[http://pinyin.sogou.com/linux/?r=pinyin][搜狗输入法 for linux]]
 
 * 安装受版权限制的软件
 有很多包由于版权的限制，不能集成在系统里发行。包括一些第三方的解码器，微软的TrueType字体，java等。这些包是放在源里可以安装的，在Software & Updates里可以看到有一项源叫做 =Software restricted by copyright or legal issues= 。这些包可以通过下面这个命令安装。
@@ -38,49 +77,47 @@ sudo apt-get install gnome-system-monitor
 参考
 - [[http://www.webupd8.org/2012/03/official-gnome-shell-extensions-weather.html][offical gnome shell extensions]]
 
-* 用户脚本目录.usrbin
-在 =~/= 目录下面，创建一个.usrbin文件夹，并且在 ~/.profile 里把它放置到PATH的最前面。
-#+begin_src sh
-export $PATH=$HOME/.usrbin:$PATH
-#+end_src
+* 用户脚本目录$HOME/bin
+系统默认会把$HOME/bin目录加入到PATH中，可以放一些你自己写的shell脚本、python脚本等，还可以用同名的命令覆盖系统命令，比如emacs，subl，在修改emacs启动闪退，sublime中文支持上面很方便。
 
-执行命令 =source ~/.profile= 使改动立即生效。
+例如，用scratch创建一个text文件 =scratch-text-editor ~/bin/text= , 其中，内容如下
+#+begin_src python
+#!/usr/bin/env python
 
-里面可以放一些你自己写的shell脚本、python脚本等，还可以用同名的命令覆盖系统命令，比如emacs，sublime，在修改emacs启动闪退，sublime中文支持上面很方便。
+import sys
+import os
+import subprocess
 
-例如，用scratch创建一个text文件 =scratch-text-editor ~/.usrbin/text=, 其中，内容如下
-#+begin_src sh
-#!/bin/bash
-GTK_IM_MODULE="xim" exec /usr/bin/scratch-text-editor "$@"
+def run():
+    exe = "/usr/bin/scratch-text-editor"
+    cwd = os.getcwd()
+    cmd = [exe]
+
+    if len(sys.argv) >= 2:
+        path = sys.argv[1]
+
+        if path.startswith("file"):
+            path = path[5:]
+
+        if not os.path.isabs(path):
+            path = os.path.join(os.getcwd(), path)
+
+        cmd = [exe, path]
+
+    env = dict(os.environ)
+    env['GTK_IM_MODULE'] = "xim"
+    subprocess.Popen(cmd, env=env)
+
+run()
 #+end_src
 
 然后，用chmod添加可执行的属性， =chmod +x ~/.usrbin/text=
 
-现在就可以在命令行下面，使用text打开scratch了，会方便很多。同时，前缀GTK_IM_MODULE="xim"是使scratch支持中文输入法。
+现在就可以在命令行下面，使用text打开scratch了，会方便很多。
 
-* 改主机名称
-装系统的时候，脑子一抽把主机名子起的特别难听。在命令行下面不好看，后来专门去网搜了一下怎么改主机名，把方法在这记录一下。\\
+用visudo命令，修改secure_path，添加/usr/username/bin到路径最前面，就可以在sudo中运行text命令了。
 
-先执行命令 =sudo text /etc/hostname= ,文件里面存储的是旧的计算机名字，把它改为你想要的名字。我给改成了eOS。保存。
-
-运行命令 =sudo gedit /etc/hosts= ，里面的内容大概如下。更改127.0.1.1位置的值，使它跟你刚才输入的计算机名字相符，完成后保存文件。
-#+begin_src sh
-127.0.0.1 localhost
-127.0.1.1 eOS
-#+end_src
-
-重启后，机器就会显示新的名字了。
-
-参考：
-- [[http://os.51cto.com/art/201311/416060.htm][Ubuntu每日小技巧——怎样修改你的计算机名字]]
-
-* 安装gdebi工具
-debi是一个包安装工具，图形化的界面，所以使用很方便，强烈建议安装。
-#+begin_src sh
-sudo apt-get install debi
-#+end_src
-
-* 安装Emacs24.5
+* Emacs24.5
 emacs最新的24.5没有deb包，只能从源码安装了。下载最新的24.5的tar.xz包 http://ftpmirror.gnu.org/emacs/
 
 在下载emacs源码的过程中，可以安装其他需要用到的工具。
@@ -105,7 +142,7 @@ checkinstall
 - [[http://ubuntuhandbook.org/index.php/2014/10/emacs-24-4-released-install-in-ubuntu-14-04/][Emacs 24.4 Released, How to Install it in Ubuntu 14.04]]
 - [[http://www.ibm.com/developerworks/cn/linux/l-cn-checkinstall/index.html][Linux 的源码安装工具 CheckInstall]]
 
-* 安装Atom
+* Atom
 Atom没有提供x86版本的deb包，但是确实是支持x86的。64位版本的deb包在Atom的官网就可以下载。32位的机器可以用PPA下载安装。
 
 32位和64位的机器都可以使用PPA安装，命令如下：
@@ -117,96 +154,14 @@ sudo apt-get install atom
 
 64位的电脑可以去官方网站上下载安装包： https://atom.io/ ，然后，直接用debi打开就可以安装了。
 
-* 安装Sublime Text 3
+* Sublime Text 3
+*安装*
 去官方网站 [[http://www.sublimetext.com/3][下载Sublime]] 的deb安装包，右键用gdebi打开。点击 Install Package就可以了。
 
-在ElementaryOS Freya上，安装的Sublime Text 3是没办法输入中文的。想要支持中文还需要配置一下，后面有说明如何配置的。
+*中文输入*
+在ElementaryOS Freya上，安装的Sublime Text 3是没办法输入中文的。
 
-* 安装StarUML
-StartUML是原作者近期开发的新的UML画图软件，保留了之前的强大功能的基础上，增加了更多功能和支持了多个操作系统。虽然是收费的软件，但是无限期试用的。只不过会隔一段时间弹出来一个提示框让你购买而已。个人觉得作者还是挺厚道的，这里就不连接到下载页面了，大家去官网找下载入口吧。
-
-file:http://staruml.io/image/screenshot.png
-
-- 官方网址：http://staruml.io/
-
-* 安装SmartGit
-SmartGit是一个跨linux、win、mac三个平台的git版本控制软件。用习惯了的话，非常好用。可以免费用于非商业用途。
-
-安装通过去官网下载deb安装包，然后使用debi安装即可。官网的下载可能会比较慢，需要耐心等待或者Lantern一下。
-
-参考：
-- 官方网站：http://www.syntevo.com/smartgit/download
-
-* 安装Elementary Tweaks
-Elementary Tweaks是eOS上一个增强配置的工具。可以个性化的定制自己的eOS，包括修改UI和窗口按钮布局，修改主题，修改icon，修改文件管理器的单双击等。
-
-Freya安装Elementary Tweaks可以通过PPA安装：
-#+begin_src sh
-sudo add-apt-repository ppa:mpstark/elementary-tweaks-daily
-sudo apt-get update
-sudo apt-get install elementary-tweaks
-#+end_src
-
-参考：
-- [[http://itsfoss.com/install-elementary-tweaks-in-elementary-os-freya-luna/][How To Install Elementary Tweaks In Elementary OS Freya & Luna]]
-- [[http://itsfoss.com/install-themes-icons-elementary-os-freya/][Install themes and icons in Elementary OS Freya]]
-
-* 安装oracle-jdk
-自带的源里带的是open-jdk。如果想安装oracle就得用ppa源安装，这是最简单的方法了。
-#+begin_src sh
-sudo apt-add-repository ppa:webupd8team/java
-sudo apt-get update
-sudo apt-get install oracle-java8-installer
-#+end_src
-
-* 安装IntelliJ-IDEA
-去官网下载tar.sz包，选择社区版。社区版本可以免费用于非商业用途，作为个人试用基本够了。如果是公司试用的话，公司会去购买的。
-
-解压后放在合适的位置，比如/usr/share里，然后进入ideaC/bin目录，运行idea.sh。运行后，可以在Tools里找到Create Desktop Shortcut就能在菜单里找到了。
-
-同样，也可以安装Pycharm。下载过程中会有网速限制，建议直接Lantern一下。
-
-- 官网下载页面：https://www.jetbrains.com/idea/download/
-
-* 安装Google Chrome
-可以去官网下载deb包安装 https://www.google.com/intl/en-US/chrome/browser/ 下载后用gdebi安装即可。
-
-注意，chromium可以直接在软件中心安装，但是chromium和google chrome是有区别的，从用户角度则是图标不一样，不需要安装falsh插件等等。安装chromium可以直接命令行安装。
-
-*启动时出现两个chrome图标问题* : 在/usr/share/applications/google-stable.desktop中添加一项 =StartupWMClass=Google-chrome-stable= 之后，再启动chrome浏览器Dock栏就不会出现连个chrome图标了。
-
-参考：
-- http://itsfoss.com/rid-google-chrome-icons-dock-elementary-os-freya/
-
-* 安装Lantern
-Lantern是一个p2p网络代理软件，主旨是所有人都可以自由的访问互联网，她的前提是基于大部分被禁止访问的网址并不是因为他们的内容非法，比如技术类的网站。
-
-去这里下载你的系统对应的版本，然后安装就可以了。Ubuntu下用gdebi安装，就能使用了。
-https://github.com/getlantern/lantern/releases/tag/latest
-
-在命令行下面指定apt-get使用代理，还要执行一个命令。 =export http_proxy=http:127.0.0.1:8787=
-
-我上外网主要是看一些技术的文章和下载一些技术软件，所以基本满足需求了。至于政治那么高端的东西，我个人觉得我的智商还判断不了外网那些新闻短片的真假性，所以从来不看。
-
-* 安装搜狗输入法
-先要删除系统自带的ibus输入法 =sudo apt-get remove ibus= 下载官网的输入法安装包，用debi打开安装就可以了。我是重启后才能正常使用，不知道是不是都需要这样。
-
-- [[http://pinyin.sogou.com/linux/?r=pinyin][搜狗输入法 for linux]]
-
-* 其他软件
-我还安装了其他各种小工具，安装过程比较简单，直接集中列举在这了
-- Y PPA Manager: 一个ppa源管理的小工具，推荐使用。
-- font-manager 字体管理工具，自带的gnome-font-viewer总是让系统死机，就给删了，换了这个。还有个gnome-specimen的字体工具也可以。我是两个都装了。
-- synaptic package manager: 新立得包管理工具，比ubuntu自带的那个非常卡的软件中心好用。
-* Atom支持中文显示
-在设置（packages->Setting View->Open 或者 Ctrl+,）的font-family里填下面的字体，注意要加最后的分号。下面的字体是系统自带的，可以改成你喜好的字体，我用的是从拷贝过来的Consolas和Yahei字体 =Droid Sans Mono, Droid Sans Fallback;= , 网上还有一些免费的中文字体，大家可以选用。
-
-字体：
-- [[http://wiki.ubuntu.com.cn/免费中文字体][免费中文字体-Ubuntu中文论坛]]
-- [[http://wenq.org/wqy2/index.cgi][文泉驿自由字体]]
-
-* Sublime支持中文输入
-进入到我们的usrbin目 =cd ~/.usrbin=, 添加文件subl_im.c，代码如下：
+进入到我们的bin目录 =cd ~/bin=, 添加文件subl_im.c，代码如下：
 #+begin_src c
 #include <gtk/gtkimcontext.h>
 void gtk_im_context_set_client_window(GtkIMContext *context, GdkWindow *window) {
@@ -234,7 +189,7 @@ void gtk_im_context_set_client_window(GtkIMContext *context, GdkWindow *window) 
 gcc -shared -o libsubl-im.so subl_im.c `pkg-config --libs --cflags gtk+-2.0` -fPIC
 #+end_src
 
-创建subl文件， =text ~/.usrbin/subl=
+创建subl文件， =text ~/bin/subl=
 #+begin_src python
 #!/usr/bin/env python
 
@@ -259,7 +214,7 @@ def run():
         cmd = [exe, path]
 
     env = dict(os.environ)
-    env['LD_PRELOAD'] = os.path.expanduser('~/.usrbin/libsubl-im.so')
+    env['LD_PRELOAD'] = os.path.expanduser('~/bin/libsubl-im.so')
     subprocess.Popen(cmd, env=env)
 
 run()
@@ -271,7 +226,79 @@ run()
 
 现在不管是在命令行，还是菜单中进入，都可以输入中文了。
 
-* Scratch支持中文输入
+* StarUML
+StartUML是原作者近期开发的新的UML画图软件，保留了之前的强大功能的基础上，增加了更多功能和支持了多个操作系统。虽然是收费的软件，但是无限期试用的。只不过会隔一段时间弹出来一个提示框让你购买而已。个人觉得作者还是挺厚道的，这里就不连接到下载页面了，大家去官网找下载入口吧。
+
+file:http://staruml.io/image/screenshot.png
+
+- 官方网址：http://staruml.io/
+
+* SmartGit
+SmartGit是一个跨linux、win、mac三个平台的git版本控制软件。用习惯了的话，非常好用。可以免费用于非商业用途。
+
+安装通过去官网下载deb安装包，然后使用debi安装即可。官网的下载可能会比较慢，需要耐心等待或者Lantern一下。
+
+参考：
+- 官方网站：http://www.syntevo.com/smartgit/download
+
+* Elementary Tweaks
+ElementaryTweaks是eOS上一个增强配置的工具。可以个性化的定制自己的eOS，包括修改UI和窗口按钮布局，修改主题，修改icon，修改文件管理器的单双击等。
+
+Freya安装Elementary Tweaks可以通过PPA安装：
+#+begin_src sh
+sudo add-apt-repository ppa:mpstark/elementary-tweaks-daily
+sudo apt-get update
+sudo apt-get install elementary-tweaks
+#+end_src
+
+参考：
+- [[http://itsfoss.com/install-elementary-tweaks-in-elementary-os-freya-luna/][How To Install Elementary Tweaks In Elementary OS Freya & Luna]]
+- [[http://itsfoss.com/install-themes-icons-elementary-os-freya/][Install themes and icons in Elementary OS Freya]]
+
+* IntelliJ IDEA
+去官网下载tar.sz包，选择社区版。社区版本可以免费用于非商业用途，作为个人试用基本够了。如果是公司试用的话，公司会去购买的。
+
+解压后放在合适的位置，比如/usr/share里，然后进入ideaC/bin目录，运行idea.sh。运行后，可以在Tools里找到Create Desktop Shortcut就能在菜单里找到了。
+
+同样，也可以安装Pycharm。下载过程中会有网速限制，建议直接Lantern一下。
+
+- 官网下载页面：https://www.jetbrains.com/idea/download/
+
+* Google Chrome
+可以去官网下载deb包安装 https://www.google.com/intl/en-US/chrome/browser/ 下载后用gdebi安装即可。
+
+Chrome和Chromium是不一样的，Chromium可以直接从命令行安装。
+
+*图标问题*
+
+在/usr/share/applications/google-stable.desktop中添加一项
+=StartupWMClass=Google-chrome-stable= ，重新锁定图标到Dock上。
+
+*参考*
+
+- http://itsfoss.com/rid-google-chrome-icons-dock-elementary-os-freya/
+
+* Lantern
+Lantern是一个p2p网络代理软件，主旨是所有人都可以自由的访问互联网，她的前提是基于大部分被禁止访问的网址并不是因为他们的内容非法，比如技术类的网站。
+
+去这里下载你的系统对应的版本，然后安装就可以了。Ubuntu下用gdebi安装，就能使用了。
+https://github.com/getlantern/lantern/releases/tag/latest
+
+在命令行下面指定apt-get使用代理，还要执行一个命令。 =export http_proxy=http:127.0.0.1:8787=
+
+我上外网主要是看一些技术的文章和下载一些技术软件，所以基本满足需求了。至于政治那么高端的东西，我个人觉得我的智商还判断不了外网那些新闻短片的真假性，所以从来不看。
+
+* 其他软件
+我还安装了其他各种小工具，安装过程比较简单，直接集中列举了
+- font-manager :: 字体管理工具，自带的gnome-font-viewer总是让系统死机，就给删了，换了这个。还有个gnome-specimen的字体工具也可以。我是两个都装了。
+* Atom中文显示
+在设置（packages->Setting View->Open 或者 Ctrl+,）的font-family里填下面的字体，注意要加最后的分号。下面的字体是系统自带的，可以改成你喜好的字体，我用的是从拷贝过来的Consolas和Yahei字体 =Droid Sans Mono, Droid Sans Fallback;= , 网上还有一些免费的中文字体，大家可以选用。
+
+字体：
+- [[http://wiki.ubuntu.com.cn/免费中文字体][免费中文字体-Ubuntu中文论坛]]
+- [[http://wenq.org/wqy2/index.cgi][文泉驿自由字体]]
+
+* Scratch中文输入
 在.usrbin目录下创建scratch-text-editor
 #+begin_src python
 #!/usr/bin/env python
